@@ -26,10 +26,13 @@ export class ValidateUser implements NestMiddleware {
 @Injectable()
 export class ValidateUserId implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    const { userId } = req.body as { userId: string };
+    console.log('req.body', req.body);
+    const { id } = req.body as { id: string };
+
+    console.log('id', id);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    if (!validate(userId)) {
+    if (!validate(id)) {
       throw new BadRequestException('Invalid user Id Format');
     }
 

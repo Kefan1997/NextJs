@@ -20,6 +20,6 @@ import { ValidateUserId } from './middleware/users.middleware';
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ValidateUserId).forRoutes('users/:userId');
+    consumer.apply(ValidateUserId).forRoutes('users/:id');
   }
 }

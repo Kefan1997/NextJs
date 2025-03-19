@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { InMemoryUsersRepository } from './in-memory-users.repository';
 import { SQLiteUsersRepository } from './sqlite-users.repository';
+import { User } from '../interfaces/user.interface';
 
 @Injectable()
 export class UsersRepository {
@@ -25,5 +26,17 @@ export class UsersRepository {
 
   getUserById(id: string) {
     return this.repository.getUserById(id);
+  }
+
+  createUser(user: User) {
+    return this.repository.createUser(user);
+  }
+
+  updateUser(id: string, user: User) {
+    return this.repository.updateUser(id, user);
+  }
+
+  deleteUser(id: string) {
+    return this.repository.deleteUser(id);
   }
 }
