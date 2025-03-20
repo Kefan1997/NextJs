@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './interfaces/user.interface';
-import LogService from '../utils/log.service';
+import LogService from '../logging/log.service';
 
 @Controller('users')
 export class UsersController {

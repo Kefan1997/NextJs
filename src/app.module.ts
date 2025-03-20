@@ -3,12 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import LogService from './utils/log.service';
+import { LogModule } from './logging/log.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), UsersModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), UsersModule, LogModule],
   controllers: [AppController],
-  providers: [AppService, LogService],
-  exports: [LogService],
+  providers: [AppService],
 })
 export class AppModule {}
