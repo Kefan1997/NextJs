@@ -11,6 +11,6 @@ COPY --chown=node:node package*.json ./
 RUN npm ci
 
 COPY --chown=node:node dist/ .
-COPY --chown=node:node src/users/mocks/ ./src/users/mocks 
+COPY --chown=node:node src/users/mocks/users.json ./users/mocks/users.json 
 
 CMD ["node", "main.js"]
