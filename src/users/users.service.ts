@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
 import { UsersRepository } from './repository/users.repository';
@@ -13,7 +13,13 @@ export class UsersService {
   }
 
   getUserById(id: string) {
-    return this.usersRepository.getUserById(id);
+    const user = this.usersRepository.getUserById(id);
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    return user;
   }
 
   createUser(user: User) {
@@ -22,10 +28,22 @@ export class UsersService {
   }
 
   updateUser(id: string, user: User) {
-    return this.usersRepository.updateUser(id, user);
+    const updatedUser = this.usersRepository.updateUser(id, user);
+
+    if (!updatedUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    return updatedUser;
   }
 
   deleteUser(id: string) {
-    return this.usersRepository.deleteUser(id);
+    const deletedUser = this.usersRepository.getUserById(id);
+
+    if (!deletedUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    return deletedUser;
   }
 }

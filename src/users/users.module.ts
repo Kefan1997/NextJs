@@ -1,11 +1,16 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { UsersController } from './users.controllers';
 import { UsersService } from './users.service';
 import { UsersRepository } from './repository/users.repository';
 import { InMemoryUsersRepository } from './repository/in-memory-users.repository';
 import { SQLiteUsersRepository } from './repository/sqlite-users.repository';
 import { ConfigModule } from '@nestjs/config';
-import { ValidateUserId } from './middleware/users.middleware';
+import { ValidateUser, ValidateUserId } from './middleware/users.middleware';
 
 @Module({
   imports: [ConfigModule],
@@ -20,6 +25,12 @@ import { ValidateUserId } from './middleware/users.middleware';
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ValidateUserId).forRoutes('users/:id');
+    consumer
+      .apply(ValidateUserId)
+      .forRoutes({ path: 'users/:id', method: RequestMethod.ALL });
+
+    consumer
+      .apply(ValidateUser)
+      .forRoutes({ path: 'users', method: RequestMethod.POST });
   }
 }

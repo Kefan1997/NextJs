@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './interfaces/user.interface';
@@ -19,9 +20,11 @@ export class UsersController {
   getAllUsers() {
     try {
       const users = this.usersService.getAllUsers();
+
       return users;
     } catch (error) {
       console.error(error);
+
       throw new HttpException(
         'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -47,9 +50,12 @@ export class UsersController {
   @Post()
   createUser(@Body() user: User) {
     try {
-      this.usersService.createUser(user);
+      const newUser = this.usersService.createUser(user);
+
+      return newUser;
     } catch (error) {
       console.error(error);
+
       throw new HttpException(
         'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -57,16 +63,15 @@ export class UsersController {
     }
   }
 
-  @Get(':id')
+  @Put(':id')
   updateUser(@Param('id') id: string, @Body() user: User) {
     try {
       const updatedUser = this.usersService.updateUser(id, user);
 
-      if (!updatedUser) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-      }
+      return updatedUser;
     } catch (error) {
       console.error(error);
+
       throw new HttpException(
         'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -77,13 +82,12 @@ export class UsersController {
   @Delete(':id')
   deleteUser(@Param('id') id: string) {
     try {
-      const deletedUser = this.usersService.deleteUser(id);
+      this.usersService.deleteUser(id);
 
-      if (!deletedUser) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-      }
+      return { message: 'User deleted successfully', id };
     } catch (error) {
       console.error(error);
+
       throw new HttpException(
         'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
