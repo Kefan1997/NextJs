@@ -9,10 +9,13 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiParam, ApiBody } from '@nestjs/swagger';
+
 import { UsersService } from './users.service';
 import { User } from './interfaces/user.interface';
 import LogService from '../logging/log.service';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(
@@ -21,6 +24,7 @@ export class UsersController {
   ) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get all users' })
   getAllUsers() {
     try {
       this.logService.info('Fetching users...');
@@ -41,6 +45,8 @@ export class UsersController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get user by id' })
+  @ApiParam({ name: 'id', description: 'User ID' })
   getUserById(@Param('id') id: string) {
     try {
       this.logService.info(`Fetching user by id:${id}...`);
@@ -61,6 +67,12 @@ export class UsersController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiBody({
+    schema: {
+      example: { name: 'John Doe', email: 'john@example.com', age: 30 },
+    },
+  })
   createUser(@Body() user: User) {
     try {
       this.logService.info('Creating user...');
@@ -81,6 +93,8 @@ export class UsersController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update user' })
+  @ApiParam({ name: 'id', description: 'User ID' })
   updateUser(@Param('id') id: string, @Body() user: User) {
     try {
       this.logService.info('Updating user...');
@@ -101,6 +115,8 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete user' })
+  @ApiParam({ name: 'id', description: 'User ID' })
   deleteUser(@Param('id') id: string) {
     try {
       this.logService.info(`Deleting user with userId: ${id}...`);
