@@ -10,8 +10,6 @@ if (!process.env.DB_PATH) {
 
 const dbPath = path.resolve(process.env.DB_PATH);
 
-console.log('dbPath', dbPath);
-
 const db: DatabaseType = new Database(dbPath, { verbose: console.log });
 
 db.prepare(
